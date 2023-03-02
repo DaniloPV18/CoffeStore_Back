@@ -1,3 +1,5 @@
+Create database Proyecto
+
 CREATE TABLE RolUsuario (
     Codigo			varchar(20) primary key,
     Descripcion		varchar(255)
@@ -19,9 +21,7 @@ CREATE TABLE Usuario (
 
 CREATE TABLE FormaPago (
 	Codigo			varchar(20) primary key,
-	Metodo			varchar(50),
-	Cuenta			varchar(50),
-	CreatedAt		datetime,
+	Metodo			varchar(50)
 );
 
 CREATE TABLE FormaPago_Usuario (
@@ -29,6 +29,9 @@ CREATE TABLE FormaPago_Usuario (
 	Usuario			int,
 	FormaPago		varchar(20),
 
+	Cuenta			varchar(50),
+	CreatedAt		datetime,
+	--
 	FOREIGN KEY (FormaPago) REFERENCES FormaPago(Codigo),
 	FOREIGN KEY (Usuario)	REFERENCES Usuario(Id)	
 );
