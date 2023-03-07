@@ -24,7 +24,7 @@ namespace proyecto.API.Shared
             }
         }
 
-        public static async Task<DataSet> ejecutaBase(string cadenaConexion, string nombreProcedimiento,string dataXml = null, string transaccion = "CONSULTA_CLIENTE_RANGO_EDAD")
+        public static async Task<DataSet> ejecutaBase(string cadenaConexion, string nombreProcedimiento, string transaccion = null, string dataXml = null)
         {
             DataSet dsResultado = new DataSet();
             SqlConnection cnn = new SqlConnection(cadenaConexion);
