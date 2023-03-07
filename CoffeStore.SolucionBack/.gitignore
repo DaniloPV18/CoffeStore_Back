@@ -16,6 +16,7 @@ bin/
 *.sln.docstates
 obj/
 FileContentIndex/
+.vs/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
