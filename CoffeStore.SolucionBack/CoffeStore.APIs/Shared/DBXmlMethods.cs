@@ -18,13 +18,15 @@ namespace proyecto.API.Shared
                 using XmlWriter xmlWriter = resultado.CreateWriter();
                 serializer.Serialize(xmlWriter, criterio);
                 return resultado;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
+                Console.WriteLine("Error: ", ex);
                 return null;
             }
         }
 
-        public static async Task<DataSet> ejecutaBase(string cadenaConexion, string nombreProcedimiento,string dataXml = null, string transaccion = "CONSULTA_CLIENTE_RANGO_EDAD")
+        public static async Task<DataSet> ejecutaBase(string cadenaConexion, string nombreProcedimiento, string transaccion = null, string dataXml = null)
         {
             DataSet dsResultado = new DataSet();
             SqlConnection cnn = new SqlConnection(cadenaConexion);
@@ -40,7 +42,7 @@ namespace proyecto.API.Shared
                 if (dataXml != null)
                 {
                     cmd.Parameters.Add("@iXml", SqlDbType.Xml).Value = dataXml.ToString();
-                }                
+                }
                 await cnn.OpenAsync().ConfigureAwait(false);
                 adt = new SqlDataAdapter(cmd);
                 adt.Fill(dsResultado);
@@ -48,17 +50,17 @@ namespace proyecto.API.Shared
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error SQL: "+ e.Message);
+                Console.WriteLine("Error SQL: " + e.Message);
                 cnn.Close();
             }
             finally
             {
                 if (cnn.State == ConnectionState.Open)
                 {
-                    cnn.Close() ;
+                    cnn.Close();
                 }
             }
-            Console.WriteLine("Cadena:"+cadenaConexion+"\n- SP:"+nombreProcedimiento+" - TR:"+transaccion+" - XML:"+dataXml);
+            Console.WriteLine("Cadena:" + cadenaConexion + "\n- SP:" + nombreProcedimiento + " - TR:" + transaccion + " - XML:" + dataXml);
             return dsResultado;
         }
     }
