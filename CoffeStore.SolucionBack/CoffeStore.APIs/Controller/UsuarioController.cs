@@ -1,7 +1,7 @@
-﻿using CoffeStore.Models;
+﻿using CoffeStore.APIs.Models;
+using CoffeStore.APIs.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using proyecto.API.Shared;
 using System.Data;
 using System.Transactions;
 using System.Xml.Linq;

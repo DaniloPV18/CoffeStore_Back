@@ -1,4 +1,4 @@
-﻿namespace proyecto.API.Shared
+﻿namespace CoffeStore.APIs.Models
 {
     public class SPNamesUsuario
     {

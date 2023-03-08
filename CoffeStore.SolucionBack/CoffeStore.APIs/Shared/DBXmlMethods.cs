@@ -5,7 +5,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace proyecto.API.Shared
+namespace CoffeStore.APIs.Shared
 {
     public static class DBXmlMethods
     {
