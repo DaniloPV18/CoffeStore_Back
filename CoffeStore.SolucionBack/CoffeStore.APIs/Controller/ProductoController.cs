@@ -1,4 +1,5 @@
-﻿using CoffeStore.Models;
+﻿using CoffeStore.APIs.Shared;
+using CoffeStore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using proyecto.API.Shared;
@@ -19,7 +20,7 @@ namespace CoffeStore.APIs.Controller
         public async Task<ActionResult<Producto>> GetProducto()
         {
             var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["default_bd"];
-            DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNames.GetProducto, "CONSULTA_PRODUCTO_TODOS");
+            DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion,SPNamesProducto.GetProducto, "CONSULTA_PRODUCTO_TODOS");
             return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
         }
 
@@ -30,7 +31,7 @@ namespace CoffeStore.APIs.Controller
         {
             var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["conexion_bd"];
             XDocument xmlParam = DBXmlMethods.getXML(producto);
-            DataSet sResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNames.GetProducto, xmlParam.ToString(), "MODIFY");
+            DataSet sResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesProducto.GetProducto, xmlParam.ToString(), "MODIFY");
             return Ok(JsonConvert.SerializeObject(sResultado, Formatting.Indented));
         }
 
@@ -40,7 +41,7 @@ namespace CoffeStore.APIs.Controller
         {
             var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["conexion_bd"];
             XDocument xmlParam = DBXmlMethods.getXML(producto);
-            DataSet sResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNames.GetProducto, xmlParam.ToString(), "DELETE");
+            DataSet sResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesProducto.GetProducto, xmlParam.ToString(), "DELETE");
             return Ok(JsonConvert.SerializeObject(sResultado, Formatting.Indented));
         }
 
@@ -53,7 +54,7 @@ namespace CoffeStore.APIs.Controller
             {
                 var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["conexion_bd"];
                 XDocument xmlParam = DBXmlMethods.getXML(producto);
-                DataSet sResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNames.GetProducto, xmlParam.ToString(), "INSERT");
+                DataSet sResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesProducto.GetProducto, xmlParam.ToString(), "INSERT");
                 return Ok(JsonConvert.SerializeObject(sResultado, Formatting.Indented));
 
             }
