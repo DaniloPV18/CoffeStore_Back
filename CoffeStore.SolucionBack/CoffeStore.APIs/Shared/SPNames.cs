@@ -2,6 +2,7 @@
 {
     public class SPNames
     {
-        public const string GetCliente = "GetCliente";
+        public const string GetUsuario = "GetUsuario";
+        public const string SetUsuario = "SetUsuario";
     }
 }

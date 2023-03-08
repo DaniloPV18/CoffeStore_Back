@@ -1,0 +1,3 @@
+namespace CoffeStore.APIs.Controller
+{
+}

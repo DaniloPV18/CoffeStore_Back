@@ -11,7 +11,5 @@ namespace CoffeStore.Models
     {
         public string? Codigo { get; set; }
         public string? Metodo { get; set; }
-        public string? Cuenta { get; set; }
-        public SqlDateTime? CreatedAt { get; set; }
     }
 }
