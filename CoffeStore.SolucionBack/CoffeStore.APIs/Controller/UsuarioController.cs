@@ -14,7 +14,6 @@ namespace CoffeStore.APIs.Controller
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-
         [Route("getall")]
         [HttpGet]
         public async Task<ActionResult<Usuario>> GetUsuario()
@@ -52,7 +51,7 @@ namespace CoffeStore.APIs.Controller
 
         [Route("adm-account")]
         [HttpPost]
-        public async Task<ActionResult<Usuario>> InsertUsuario([FromBody] Usuario usuario)
+        public async Task<ActionResult<Usuario>> SetUsuario([FromBody] Usuario usuario)
         {
             var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["default_bd"];
             XDocument xmlParam = DBXmlMethods.getXML(usuario);
