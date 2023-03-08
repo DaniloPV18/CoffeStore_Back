@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CoffeStore.Models;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using proyecto.API.Shared;
+using System.Data;
+using System.Xml.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,36 +13,55 @@ namespace CoffeStore.APIs.Controller
     [ApiController]
     public class ProductoController : ControllerBase
     {
-        // GET: api/<ValuesController>
+
+        [Route("getall")]
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult<Producto>> GetProducto()
         {
-            return new string[] { "value1", "value2" };
+            var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["default_bd"];
+            DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNames.GetProducto, "CONSULTA_PRODUCTO_TODOS");
+            return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
         }
 
-        // GET api/<ValuesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<ValuesController>
+        [Route("[action]")]
         [HttpPost]
-        public void Post([FromBody] string value)
+
+        public async Task<ActionResult<Producto>> GetProductoModificar([FromBody] Producto producto)
         {
+            var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["conexion_bd"];
+            XDocument xmlParam = DBXmlMethods.getXML(producto);
+            DataSet sResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNames.GetProducto, xmlParam.ToString(), "MODIFY");
+            return Ok(JsonConvert.SerializeObject(sResultado, Formatting.Indented));
         }
 
-        // PUT api/<ValuesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+
+        public async Task<ActionResult<Producto>> GetProductoEliminar([FromBody] Producto producto)
         {
+            var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["conexion_bd"];
+            XDocument xmlParam = DBXmlMethods.getXML(producto);
+            DataSet sResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNames.GetProducto, xmlParam.ToString(), "DELETE");
+            return Ok(JsonConvert.SerializeObject(sResultado, Formatting.Indented));
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+
+        public async Task<ActionResult<Producto>> GetProductoInsertar([FromBody]Producto producto)
+        {
+            try
+            {
+                var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["conexion_bd"];
+                XDocument xmlParam = DBXmlMethods.getXML(producto);
+                DataSet sResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNames.GetProducto, xmlParam.ToString(), "INSERT");
+                return Ok(JsonConvert.SerializeObject(sResultado, Formatting.Indented));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
+
