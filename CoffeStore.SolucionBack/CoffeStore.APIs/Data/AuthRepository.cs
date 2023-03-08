@@ -5,12 +5,12 @@ namespace CoffeStore.APIs.Data
 {
     public class AuthRepository : IAuthRepository
     {
-        public Task<User> Login(string email, string password)
+        public Task<Usuario> Login(string email, string password)
         {
             throw new NotImplementedException();
         }
 
-        public Task<User> Register(User user, string password)
+        public Task<Usuario> Register(Usuario user, string password)
         {
             throw new NotImplementedException();
         }
