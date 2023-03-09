@@ -11,9 +11,7 @@ namespace CoffeStore.APIs.Models
         public SqlDateTime? FechaNacimiento { set; get; }
         public string? Email { set; get; }
         public string? Contrasena { set; get; }
-        public RolUsuario Rol { set; get; }
+        public string Rol { set; get; }
         public string? Estado { set; get; }
-        public SqlDateTime? CreatedAt { set; get; }
-        public SqlDateTime? UpdatedAt { set; get; }
     }
 }

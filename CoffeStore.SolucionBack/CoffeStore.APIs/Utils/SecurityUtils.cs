@@ -27,7 +27,7 @@ public class SecurityUtils
                 new Claim("id", user.Id.ToString()),
                 new Claim("nombres", user.Nombres),
                 new Claim("apellidos", user.Apellidos),
-                new Claim("rol", user.Rol.Codigo)
+                new Claim("rol", user.Rol)
             }),
             Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

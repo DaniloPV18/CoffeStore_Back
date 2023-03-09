@@ -30,7 +30,7 @@ BEGIN
 	BEGIN TRY
 		IF(@iTransaccion = 'LOGIN')
 		BEGIN
-			SELECT	@id = CONVERT(VARCHAR, DATO_XML.X.value('Email[1]', 'INT'))
+			SELECT	@id = CONVERT(VARCHAR, DATO_XML.X.value('Email[1]', 'VARCHAR(255)'))
 			FROM	@iXML.nodes('/Usuario') AS DATO_XML(X)
 
 			SELECT U.Email,	U.Contrasena, U.Rol
