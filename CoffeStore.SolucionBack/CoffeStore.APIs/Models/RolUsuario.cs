@@ -8,7 +8,7 @@ namespace CoffeStore.APIs.Models
 {
     public class RolUsuario
     {
-        public string? Codigo { get; set; }
+        public string Codigo { get; set; }
         public string? Descripcion { get; set;}
     }
 }
