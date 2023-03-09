@@ -25,7 +25,7 @@ namespace CoffeStore.APIs.Controller
 
 
         [Route("get-account")]
-        [HttpGet]
+        [HttpGet("{correo}")]
         public async Task<ActionResult<Usuario>> GetUsuario(string correo)
         {
             var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["default_bd"];
