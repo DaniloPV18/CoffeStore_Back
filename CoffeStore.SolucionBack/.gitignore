@@ -17,6 +17,7 @@ bin/
 obj/
 FileContentIndex/
 .vs/
+.vscode/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
