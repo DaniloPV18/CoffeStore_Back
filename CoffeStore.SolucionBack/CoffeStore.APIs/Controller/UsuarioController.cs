@@ -26,10 +26,12 @@ namespace CoffeStore.APIs.Controller
 
         [Route("get-account")]
         [HttpGet("{correo}")]
-        public async Task<ActionResult<Usuario>> GetUsuario(string correo)
+        public async Task<ActionResult<Usuario>> GetUsuario(string email)
         {
+            Usuario usuario = new Usuario();
+            usuario.Email = email;
             var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["default_bd"];
-            XDocument xmlParam = DBXmlMethods.getXML(correo);
+            XDocument xmlParam = DBXmlMethods.getXML(usuario);
             DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.GetUsuario, "CONSULTA_USUARIO_CORREO", xmlParam.ToString());
             return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
         }
@@ -59,8 +61,10 @@ namespace CoffeStore.APIs.Controller
         [HttpDelete("{cedula}")]
         public async Task<ActionResult<Usuario>> DeleteUsuario(string cedula)
         {
+            Usuario usuario = new Usuario();
+            usuario.Cedula = cedula;
             var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["default_bd"];
-            XDocument xmlParam = DBXmlMethods.getXML(cedula);
+            XDocument xmlParam = DBXmlMethods.getXML(usuario);
             DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.SetUsuario, "DELETE", xmlParam.ToString());
             return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
         }
