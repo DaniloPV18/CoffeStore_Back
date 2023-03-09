@@ -23,39 +23,45 @@ namespace CoffeStore.APIs.Controller
             return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
         }
 
-        /*
-        [Route("getid")]
-        [HttpGet]
-        public async Task<ActionResult<Usuario>> GetUsuarioId(int id, string transaccion)
-        {
-            Usuario u = new Usuario();
-            u.Id = id;
-            u.Transaccion = transaccion;
-            var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["default_bd"];
-            XDocument xmlParam = DBXmlMethods.getXML(u);
-            DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNames.GetUsuario, u.Transaccion, xmlParam.ToString());
-            return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
-        }
-        */
 
         [Route("get-account")]
-        [HttpPost]
-        public async Task<ActionResult<Usuario>> GetUsuario([FromBody] Usuario usuario)
+        [HttpGet]
+        public async Task<ActionResult<Usuario>> GetUsuario(string correo)
         {
             var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["default_bd"];
-            XDocument xmlParam = DBXmlMethods.getXML(usuario);
-            DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.GetUsuario, usuario.Transaccion, xmlParam.ToString());
+            XDocument xmlParam = DBXmlMethods.getXML(correo);
+            DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.GetUsuario, "CONSULTA_USUARIO_CORREO", xmlParam.ToString());
             return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
         }
 
 
-        [Route("adm-account")]
+        [Route("createuser")]
         [HttpPost]
-        public async Task<ActionResult<Usuario>> SetUsuario([FromBody] Usuario usuario)
+        public async Task<ActionResult<Usuario>> InsertarUsuario([FromBody] Usuario usuario)
         {
             var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["default_bd"];
             XDocument xmlParam = DBXmlMethods.getXML(usuario);
-            DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.SetUsuario, usuario.Transaccion, xmlParam.ToString());
+            DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.SetUsuario, "INSERT", xmlParam.ToString());
+            return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
+        }
+
+        [Route("updatedata")]
+        [HttpPut]
+        public async Task<ActionResult<Usuario>> UpdateUsuario([FromBody] Usuario usuario)
+        {
+            var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["default_bd"];
+            XDocument xmlParam = DBXmlMethods.getXML(usuario);
+            DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.SetUsuario, "UPDATE", xmlParam.ToString());
+            return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
+        }
+
+        [Route("deleteuser")]
+        [HttpDelete("{cedula}")]
+        public async Task<ActionResult<Usuario>> DeleteUsuario(string cedula)
+        {
+            var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["default_bd"];
+            XDocument xmlParam = DBXmlMethods.getXML(cedula);
+            DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.SetUsuario, "DELETE", xmlParam.ToString());
             return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
         }
     }
