@@ -1,5 +1,7 @@
 namespace CoffeStore.APIs.Data.DTO;
 
-public class AuthResponse {
-    string AccessToken { get; set; }
+public class AuthResponse
+{
+    public int StatusCode { get; set; }
+    public string? AccessToken { get; set; }
 }

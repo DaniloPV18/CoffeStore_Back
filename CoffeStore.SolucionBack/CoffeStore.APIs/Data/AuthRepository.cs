@@ -18,7 +18,7 @@ public class AuthRepository : IAuthRepository
             .GetSection("ConnectionStrings")["conexion_bd"];
     }
 
-    public async Task<Usuario> Login(string email, string password)
+    public async Task<Usuario> Login(string email)
     {
         var user = new Usuario();
         user.Email = email;
@@ -27,12 +27,20 @@ public class AuthRepository : IAuthRepository
         DataSet dataSetRetrieved = await DBXmlMethods
             .ejecutaBase(this.conexionString, SPNamesProducto.Authentication, "LOGIN", xmlParam.ToString());
 
-        var userRetrieved = dataSetRetrieved.Tables[0].Rows[0];
-        user.Nombres = userRetrieved["Nombres"].ToString();
-        user.Apellidos = userRetrieved["Apellidos"].ToString();
-        user.Id = Int32.Parse(userRetrieved["Id"].ToString());
-        user.Rol = userRetrieved["Rol"].ToString();
-        
+        if (dataSetRetrieved.Tables[0].Rows.Count == 0)
+        {
+            throw new Exception("No hay registros");
+        }
+        else
+        {
+            // Todo: Solucionar warnings
+            var userRetrieved = dataSetRetrieved.Tables[0].Rows[0];
+            user.Nombres = userRetrieved["Nombres"].ToString();
+            user.Apellidos = userRetrieved["Apellidos"].ToString();
+            user.Id = Int32.Parse(userRetrieved["Id"].ToString());
+            user.Rol = userRetrieved["Rol"].ToString();
+        }
+
         return user;
     }
 
