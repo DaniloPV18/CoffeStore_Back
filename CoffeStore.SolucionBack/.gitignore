@@ -18,6 +18,8 @@ obj/
 FileContentIndex/
 .vs/
 .vscode/
+docker-compose.yml
+Dockerfile
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
