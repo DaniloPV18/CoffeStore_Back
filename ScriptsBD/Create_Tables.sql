@@ -1,9 +1,3 @@
-DROP DATABASE IF EXISTS Proyecto
-
-CREATE DATABASE Proyecto
-
-USE Proyecto
-
 CREATE TABLE RolUsuario
 (
 	Codigo varchar(20) primary key,
@@ -13,6 +7,7 @@ CREATE TABLE RolUsuario
 CREATE TABLE Usuario
 (
 	Id int identity(1,1) primary key,
+	Cedula varchar(255),
 	Nombres varchar(255),
 	Apellidos varchar(255),
 	FechaNacimiento date,

@@ -1,5 +1,3 @@
-USE Proyecto
-GO
 -- Insert RolUsuario
 INSERT INTO RolUsuario 
     (Codigo, Descripcion)
@@ -9,16 +7,16 @@ VALUES
                
 -- Insert Usuario   
 INSERT INTO Usuario 
-    (Nombres, Apellidos, FechaNacimiento, Email, Contrasena, Rol, Estado, CreatedAt, UpdateAt)
+    (Cedula, Nombres, Apellidos, FechaNacimiento, Email, Contrasena, Rol, Estado, CreatedAt, UpdateAt)
 VALUES 
-    ('Ivonne', 'Minchala', '1998-12-25', 'Ivonne@example.com', '1234', 'USER', 'A', GETDATE(), null),
-    ('Keneth', 'Riera', '2000-12-02', 'Keneth@example.com', '1234', 'USER', 'A', GETDATE(), null),
-    ('Danilo', 'Pin', '1999-05-28 ', 'Danilo@example.com', '1234', 'USER', 'A', GETDATE(), null),
-    ('Melany', 'Mero', '1998-10-08', 'Melany@example.com', '1234', 'USER', 'A', GETDATE(), null),
-    ('Carlos', 'Bone', '1996-04-09', 'Carlos@example.com', '1234', 'USER', 'A', GETDATE(), null),
-    ('Bryan', 'Rizzo', '1999-07-30 ', 'Bryan@example.com', '1234', 'USER', 'A', GETDATE(), null),
-    ('Roxana', 'Veloz', '1997-01-29', 'Roxana@example.com', '1234', 'ADMIN', 'A', GETDATE(), null),
-    ('Jorge', 'Charco', '1986-08-19', 'Jorge@example.com', '1234', 'ADMIN', 'A', GETDATE(), null);
+    ('11111','Ivonne', 'Minchala', '1998-12-25', 'Ivonne@example.com', '1234', 'USER', 'A', GETDATE(), null),
+    ('22222','Keneth', 'Riera', '2000-12-02', 'Keneth@example.com', '1234', 'USER', 'A', GETDATE(), null),
+    ('33333','Danilo', 'Pin', '1999-05-28 ', 'Danilo@example.com', '1234', 'USER', 'A', GETDATE(), null),
+    ('44444','Melany', 'Mero', '1998-10-08', 'Melany@example.com', '1234', 'USER', 'A', GETDATE(), null),
+    ('555555','Carlos', 'Bone', '1996-04-09', 'Carlos@example.com', '1234', 'USER', 'A', GETDATE(), null),
+    ('66666','Bryan', 'Rizzo', '1999-07-30 ', 'Bryan@example.com', '1234', 'USER', 'A', GETDATE(), null),
+    ('777777','Roxana', 'Veloz', '1997-01-29', 'Roxana@example.com', '1234', 'ADMIN', 'A', GETDATE(), null),
+    ('88888','Jorge', 'Charco', '1986-08-19', 'Jorge@example.com', '1234', 'ADMIN', 'A', GETDATE(), null);
 
 -- Insert Forma de Pago
 INSERT INTO FormaPago 
