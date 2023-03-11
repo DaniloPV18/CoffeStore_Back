@@ -17,6 +17,7 @@ bin/
 obj/
 appsettings.Development.json
 appsettings.json
+Properties/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
