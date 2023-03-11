@@ -16,16 +16,16 @@ namespace CoffeStore.APIs.Controller
     {
         [Route("getall")]
         [HttpGet]
-        public async Task<ActionResult<Usuario>> GetUsuario()
+        public async Task<ActionResult<Usuario>> GetUsuarios()
         {
             var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["default_bd"];
             DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.GetUsuario, "CONSULTA_USUARIO_TODOS");
             return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
         }
 
-
-        [Route("get-account")]
-        [HttpGet("{correo}")]
+        /*
+        [Route("action")]
+        [HttpGet]
         public async Task<ActionResult<Usuario>> GetUsuario(string email)
         {
             Usuario usuario = new Usuario();
@@ -35,7 +35,7 @@ namespace CoffeStore.APIs.Controller
             DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.GetUsuario, "CONSULTA_USUARIO_CORREO", xmlParam.ToString());
             return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
         }
-
+        */
 
         [Route("createuser")]
         [HttpPost]
@@ -56,7 +56,7 @@ namespace CoffeStore.APIs.Controller
             DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.SetUsuario, "UPDATE", xmlParam.ToString());
             return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
         }
-
+        /*
         [Route("deleteuser")]
         [HttpDelete("{cedula}")]
         public async Task<ActionResult<Usuario>> DeleteUsuario(string cedula)
@@ -68,5 +68,6 @@ namespace CoffeStore.APIs.Controller
             DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.SetUsuario, "DELETE", xmlParam.ToString());
             return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
         }
+        */
     }
 }
