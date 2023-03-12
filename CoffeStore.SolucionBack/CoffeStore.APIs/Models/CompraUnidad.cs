@@ -13,5 +13,7 @@ namespace CoffeStore.APIs.Models
         public FormaPago? FormaPago { get; set; }
         public Producto? Producto { get; set; }
         public int? Cantidad { get; set; }
+        public DateTime? CreatedAt { set; get; }
+        public DateTime? UpdatedAt { set; get; }
     }
 }
