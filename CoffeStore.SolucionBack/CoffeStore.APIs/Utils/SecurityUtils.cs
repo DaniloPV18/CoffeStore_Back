@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using CoffeStore.APIs.Models;
-using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography;
 
 namespace CoffeStore.APIs.Utils;
@@ -17,21 +16,25 @@ public class SecurityUtils
             throw new ArgumentNullException("user");
         }
 
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(secretKey);
+        var claims = new List<Claim>
+        {
+            new Claim("id", user.Id.ToString()!),
+            new Claim("nombres", user.Nombres!),
+            new Claim("apellidos", user.Apellidos!),
+            new Claim("rol", user.Rol!),
+        };
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new Claim[]
-            {
-                new Claim("id", user.Id.ToString()),
-                new Claim("nombres", user.Nombres),
-                new Claim("apellidos", user.Apellidos),
-                new Claim("rol", user.Rol)
-            }),
+            Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddDays(7),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            SigningCredentials = creds,
         };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
@@ -40,7 +43,7 @@ public class SecurityUtils
     public static bool ValidateJWTToken(string token, string secretKey)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(secretKey);
+        var key = Encoding.UTF8.GetBytes(secretKey);
 
         tokenHandler.ValidateToken(token, new TokenValidationParameters
         {

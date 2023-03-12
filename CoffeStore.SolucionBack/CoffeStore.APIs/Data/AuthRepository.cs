@@ -33,24 +33,28 @@ public class AuthRepository : IAuthRepository
         }
         else
         {
-            // Todo: Solucionar warnings
             var userRetrieved = dataSetRetrieved.Tables[0].Rows[0];
             user.Nombres = userRetrieved["Nombres"].ToString();
             user.Apellidos = userRetrieved["Apellidos"].ToString();
-            user.Id = Int32.Parse(userRetrieved["Id"].ToString());
+            user.Id = Int32.Parse(userRetrieved["Id"].ToString()!);
             user.Rol = userRetrieved["Rol"].ToString();
         }
 
         return user;
     }
 
-    public Task<Usuario> Register(Usuario user, string password)
+    public async Task<Usuario> Register(Usuario user)
     {
-        throw new NotImplementedException();
-    }
+        XDocument xmlParam = DBXmlMethods.getXML(user);
+        DataSet dataSetRetrieved = await DBXmlMethods
+            .ejecutaBase(this.conexionString, SPNamesProducto.Authentication, "REGISTER", xmlParam.ToString());
 
-    public Task<bool> UserExists(string email)
-    {
-        throw new NotImplementedException();
+        var userRetrieved = dataSetRetrieved.Tables[0].Rows[0];
+        user.Nombres = userRetrieved["Nombres"].ToString();
+        user.Apellidos = userRetrieved["Apellidos"].ToString();
+        user.Id = Int32.Parse(userRetrieved["Id"].ToString()!);
+        user.Rol = userRetrieved["Rol"].ToString();
+
+        return user;
     }
 }

@@ -21,19 +21,14 @@ public class AuthController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<AuthResponse>> Login([FromBody] Usuario user)
     {
-        if (await this.authService.Login(user))
-        {
-            AuthResponse resp = new AuthResponse();
-            resp.StatusCode = 200;
-            resp.AccessToken = ""; // todo: enviar el token como respuesta
-            return resp;
-        }
-        else
-        {
-            AuthResponse resp = new AuthResponse();
-            resp.StatusCode = 500; // todo: retornar el código adecuado
-            return resp;
-        }
+        return await this.authService.Login(user);
+    }
+
+    [Route("register")]
+    [HttpPost]
+    public async Task<ActionResult<AuthResponse>> Register([FromBody] Usuario user)
+    {
+        return await this.authService.Register(user);
     }
 
 }

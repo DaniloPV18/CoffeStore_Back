@@ -4,7 +4,7 @@ namespace CoffeStore.APIs.Models
 {
     public class Usuario
     {
-        public int Id { set; get; }
+        public int? Id { set; get; }
         public string? Cedula { set; get; }
         public string? Nombres { set; get; }
         public string? Apellidos { set; get; }
