@@ -8,7 +8,7 @@ namespace CoffeStore.APIs.Models
         public string? Cedula { set; get; }
         public string? Nombres { set; get; }
         public string? Apellidos { set; get; }
-        public DateOnly? FechaNacimiento { set; get; }
+        public DateTime? FechaNacimiento { set; get; } /*Formato DateTime JSON -> yyyy-mm-dd */
         public string? Email { set; get; }
         public string? Contrasena { set; get; }
         public string? Rol { set; get; }
