@@ -1,3 +1,5 @@
+using CoffeStore.APIs.Controller.Middlewares;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
+builder.Services.AddTransient<AuthMiddleware>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -16,6 +19,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<AuthMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
