@@ -30,10 +30,10 @@ BEGIN
 	BEGIN TRY
 		IF(@iTransaccion = 'LOGIN')
 		BEGIN
-			SELECT	@id = CONVERT(VARCHAR, DATO_XML.X.value('Email[1]', 'VARCHAR(255)'))
+			SELECT	@email = CONVERT(VARCHAR, DATO_XML.X.value('Email[1]', 'VARCHAR(255)'))
 			FROM	@iXML.nodes('/Usuario') AS DATO_XML(X)
 
-			SELECT U.Email,	U.Contrasena, U.Rol
+			SELECT U.Id, U.Nombres, U.Apellidos, U.Rol
 			FROM Usuario AS U
 			WHERE U.Email = @email
 
@@ -54,7 +54,11 @@ BEGIN
 			INSERT INTO Usuario
 				(Nombres,	Apellidos,	FechaNacimiento,	Email,	Contrasena,	Rol,	Estado,		CreatedAt)
 			VALUES 
-				(@nombres,	@apellidos,	@fecha_nacimiento,	@email,	@contrasena,@rol,	'activo',	GETDATE())
+				(@nombres,	@apellidos,	@fecha_nacimiento,	@email,	@contrasena,@rol,	'A',	GETDATE())
+
+			SELECT U.Id, U.Nombres, U.Apellidos, U.Rol
+			FROM Usuario AS U
+			WHERE U.Email = @email
 
 			SET @respuesta	= 'ok';
 			SET @leyenda	= 'Consulta exitosa';

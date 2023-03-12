@@ -11,7 +11,7 @@ CREATE TABLE Usuario
 	Nombres varchar(255),
 	Apellidos varchar(255),
 	FechaNacimiento date,
-	Email varchar(50),
+	Email varchar(50) unique,
 	Contrasena varchar(50),
 	Rol varchar(20),
 	Estado varchar(50),
