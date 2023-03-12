@@ -16,7 +16,7 @@ namespace CoffeStore.APIs.Models
         public float? Precio { get; set; }
         public CategoriaProducto? Categoria { get; set; }
         public string? Estado { get; set; }
-        public SqlDateTime? CreatedAt { set; get; }
-        public SqlDateTime? UpdatedAt { set; get; }
+        public DateTime? CreatedAt { set; get; }
+        public DateTime? UpdatedAt { set; get; }
     }
 }

@@ -10,5 +10,7 @@ namespace CoffeStore.APIs.Models
     {
         public int? Id { get; set; }
         public CompraUnidad? CompraUnidad { get; set; }
+        public DateTime? CreatedAt { set; get; }
+        public DateTime? UpdatedAt { set; get; }
     }
 }
