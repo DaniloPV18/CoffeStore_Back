@@ -16,7 +16,8 @@ BEGIN
 
 	DECLARE @rol					AS VARCHAR(20);
 	DECLARE @email					AS VARCHAR(20);
-	DECLARE @contrasena				AS VARCHAR(50);
+	DECLARE @cedula					AS VARCHAR(255);
+	DECLARE @contrasena				AS VARCHAR(255);
 	DECLARE @nombres				AS VARCHAR(255)
 	DECLARE @apellidos				AS VARCHAR(255)
 	DECLARE @id						AS INT;
@@ -30,10 +31,10 @@ BEGIN
 	BEGIN TRY
 		IF(@iTransaccion = 'LOGIN')
 		BEGIN
-			SELECT	@id = CONVERT(VARCHAR, DATO_XML.X.value('Email[1]', 'VARCHAR(255)'))
+			SELECT	@email = CONVERT(VARCHAR, DATO_XML.X.value('Email[1]', 'VARCHAR(255)'))
 			FROM	@iXML.nodes('/Usuario') AS DATO_XML(X)
 
-			SELECT U.Email,	U.Contrasena, U.Rol
+			SELECT U.Id, U.Nombres, U.Apellidos, U.Rol, U.Contrasena
 			FROM Usuario AS U
 			WHERE U.Email = @email
 
@@ -47,14 +48,19 @@ BEGIN
 				@apellidos =			LTRIM(RTRIM(DATO_XML.X.value('Apellidos[1]','VARCHAR(255)'))),
 				@fecha_nacimiento =		CONVERT(DATE, DATO_XML.X.value('FechaNacimiento[1]','DATE')),
 				@email =				LTRIM(RTRIM(DATO_XML.X.value('Email[1]','VARCHAR(50)'))),
-				@contrasena =			LTRIM(RTRIM(DATO_XML.X.value('Contrasena[1]','VARCHAR(50)'))),
-				@rol =					LTRIM(RTRIM(DATO_XML.X.value('Rol[1]','VARCHAR(50)')))
+				@contrasena =			LTRIM(RTRIM(DATO_XML.X.value('Contrasena[1]','VARCHAR(255)'))),
+				@rol =					LTRIM(RTRIM(DATO_XML.X.value('Rol[1]','VARCHAR(50)'))),
+				@cedula =				LTRIM(RTRIM(DATO_XML.X.value('Cedula[1]','VARCHAR(255)')))
 			FROM @iXML.nodes('/Usuario') AS DATO_XML(X)
 
 			INSERT INTO Usuario
-				(Nombres,	Apellidos,	FechaNacimiento,	Email,	Contrasena,	Rol,	Estado,		CreatedAt)
+				(Nombres,	Apellidos, Cedula,	FechaNacimiento,	Email,	Contrasena,	Rol,	Estado,		CreatedAt)
 			VALUES 
-				(@nombres,	@apellidos,	@fecha_nacimiento,	@email,	@contrasena,@rol,	'activo',	GETDATE())
+				(@nombres,	@apellidos, @cedula,	@fecha_nacimiento,	@email,	@contrasena,@rol,	'A',	GETDATE())
+
+			SELECT U.Id, U.Nombres, U.Apellidos, U.Rol
+			FROM Usuario AS U
+			WHERE U.Email = @email
 
 			SET @respuesta	= 'ok';
 			SET @leyenda	= 'Consulta exitosa';

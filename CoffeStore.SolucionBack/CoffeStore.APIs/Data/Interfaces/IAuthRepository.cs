@@ -4,8 +4,7 @@ namespace CoffeStore.APIs.Data.Interfaces
 {
     public interface IAuthRepository
     {
-        Task<Usuario> Register(Usuario user, string password);
+        Task<Usuario> Register(Usuario user);
         Task<Usuario> Login(string email);
-        Task<bool> UserExists(string email);
     }
 }
