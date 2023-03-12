@@ -26,22 +26,21 @@ public class AuthService
                 AuthResponse resp = new AuthResponse();
                 resp.StatusCode = 200;
                 resp.AccessToken = token;
+                resp.UserEmail = userRtrv.Email;
+                resp.UserID = userRtrv.Id;
+                resp.UserRole = userRtrv.Rol;
                 return resp;
             }
             else
             {
                 Console.WriteLine("La contraseña es incorrecta.");
-                AuthResponse resp = new AuthResponse();
-                resp.StatusCode = 500;
-                return resp;
+                throw new Exception("Credenciales no validas");
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            AuthResponse resp = new AuthResponse();
-            resp.StatusCode = 500;
-            return resp;
+            throw new Exception("Credenciales no validas");
         }
     }
 
@@ -60,6 +59,9 @@ public class AuthService
             AuthResponse resp = new AuthResponse();
             resp.StatusCode = 200;
             resp.AccessToken = token;
+            resp.UserEmail = userRtrv.Email;
+            resp.UserID = userRtrv.Id;
+            resp.UserRole = userRtrv.Rol;
             return resp;
         }
         catch (Exception e)
