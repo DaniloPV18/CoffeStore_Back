@@ -14,19 +14,18 @@ namespace CoffeStore.APIs.Controller
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        [Route("getall")]
+
         [HttpGet]
-        public async Task<ActionResult<Usuario>> GetUsuarios()
+        public async Task<ActionResult> GetUsuarios()
         {
             var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["default_bd"];
             DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.GetUsuario, "CONSULTA_USUARIO_TODOS");
-            return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
+            return Ok(JsonConvert.SerializeObject(dsResultado.Tables[0], Newtonsoft.Json.Formatting.Indented));
         }
 
         /*
-        [Route("action")]
         [HttpGet]
-        public async Task<ActionResult<Usuario>> GetUsuario(string email)
+        public async Task<ActionResult<Usuario>> GetUsuarioId(string email)
         {
             Usuario usuario = new Usuario();
             usuario.Email = email;
@@ -56,18 +55,17 @@ namespace CoffeStore.APIs.Controller
             DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.SetUsuario, "UPDATE", xmlParam.ToString());
             return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
         }
-        /*
-        [Route("deleteuser")]
-        [HttpDelete("{cedula}")]
-        public async Task<ActionResult<Usuario>> DeleteUsuario(string cedula)
+        
+        [HttpDelete("deleteuser/{id}")]
+        public async Task<ActionResult<Usuario>> DeleteUsuario(int id)
         {
             Usuario usuario = new Usuario();
-            usuario.Cedula = cedula;
+            usuario.Id = id;
             var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["default_bd"];
             XDocument xmlParam = DBXmlMethods.getXML(usuario);
             DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.SetUsuario, "DELETE", xmlParam.ToString());
             return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
         }
-        */
+        
     }
 }
