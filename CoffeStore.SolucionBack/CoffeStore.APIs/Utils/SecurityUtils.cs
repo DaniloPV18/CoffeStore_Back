@@ -80,6 +80,7 @@ public class SecurityUtils
     public static bool VerifyHashedPassword(string hashedPassword, string password)
     {
         byte[] buffer4;
+        Console.WriteLine("HashedPassword: " + hashedPassword);
         if (hashedPassword == null)
         {
             return false;

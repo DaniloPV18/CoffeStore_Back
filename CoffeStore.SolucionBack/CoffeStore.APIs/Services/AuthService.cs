@@ -22,7 +22,7 @@ public class AuthService
             if (SecurityUtils.VerifyHashedPassword(userRtrv.Contrasena!, user.Contrasena!))
             {
                 Console.WriteLine("La contraseña es válida.");
-                string token = SecurityUtils.GenerateJWTToken(user, "this is my custom Secret key for authentication");
+                string token = SecurityUtils.GenerateJWTToken(userRtrv, "this is my custom Secret key for authentication");
                 AuthResponse resp = new AuthResponse();
                 resp.StatusCode = 200;
                 resp.AccessToken = token;

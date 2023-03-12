@@ -36,11 +36,11 @@ public class AuthRepository : IAuthRepository
             var userRetrieved = dataSetRetrieved.Tables[0].Rows[0];
             user.Nombres = userRetrieved["Nombres"].ToString();
             user.Apellidos = userRetrieved["Apellidos"].ToString();
+            user.Contrasena = userRetrieved["Contrasena"].ToString();
             user.Id = Int32.Parse(userRetrieved["Id"].ToString()!);
             user.Rol = userRetrieved["Rol"].ToString();
+            return user;
         }
-
-        return user;
     }
 
     public async Task<Usuario> Register(Usuario user)

@@ -12,7 +12,7 @@ CREATE TABLE Usuario
 	Apellidos varchar(255),
 	FechaNacimiento date,
 	Email varchar(50) unique,
-	Contrasena varchar(50),
+	Contrasena varchar(255),
 	Rol varchar(20),
 	Estado varchar(50),
 	CreatedAt datetime,
