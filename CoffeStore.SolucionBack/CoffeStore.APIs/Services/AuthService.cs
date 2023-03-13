@@ -39,11 +39,11 @@ public class AuthService
         }
         catch (UserNotFoundException e)
         {
-            throw new UserNotFoundException("No se ha encontrado el usuario: ", e);
+            throw new UserNotFoundException("No se ha encontrado el usuario: " + e);
         }
         catch (Exception e)
         {
-            throw new UnauthorizedException("Credenciales no validas: ", e);
+            throw new UnauthorizedException("Credenciales no validas: " + e);
         }
     }
 
@@ -67,7 +67,7 @@ public class AuthService
         }
         catch (Exception e)
         {
-            throw new UnauthorizedException("Credenciales no validas: ", e);
+            throw new UnauthorizedException("Credenciales no validas: " + e);
         }
     }
 
