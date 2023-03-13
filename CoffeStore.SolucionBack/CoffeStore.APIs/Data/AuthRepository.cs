@@ -1,6 +1,7 @@
 using System.Data;
 using System.Xml.Linq;
 using CoffeStore.APIs.Data.Interfaces;
+using CoffeStore.APIs.Exceptions;
 using CoffeStore.APIs.Models;
 using CoffeStore.APIs.Shared;
 
@@ -29,7 +30,7 @@ public class AuthRepository : IAuthRepository
 
         if (dataSetRetrieved.Tables[0].Rows.Count == 0)
         {
-            throw new Exception("No hay registros");
+            throw new UserNotFoundException("No hay registros");
         }
         else
         {

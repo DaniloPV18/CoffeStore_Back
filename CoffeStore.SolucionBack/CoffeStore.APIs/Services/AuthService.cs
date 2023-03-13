@@ -1,5 +1,6 @@
 using CoffeStore.APIs.Data;
 using CoffeStore.APIs.Data.DTO;
+using CoffeStore.APIs.Exceptions;
 using CoffeStore.APIs.Models;
 using CoffeStore.APIs.Utils;
 
@@ -18,29 +19,31 @@ public class AuthService
     {
         try
         {
+            if (user.Email == null || "".Equals(user.Email))
+            {
+                throw new BadRequestException();
+            }
+
             Usuario userRtrv = await this.authRepository.Login(user.Email!);
             if (SecurityUtils.VerifyHashedPassword(userRtrv.Contrasena!, user.Contrasena!))
             {
-                Console.WriteLine("La contraseña es válida.");
                 string token = SecurityUtils.GenerateJWTToken(userRtrv, "this is my custom Secret key for authentication");
-                AuthResponse resp = new AuthResponse();
-                resp.StatusCode = 200;
-                resp.AccessToken = token;
-                resp.UserEmail = userRtrv.Email;
-                resp.UserID = userRtrv.Id;
-                resp.UserRole = userRtrv.Rol;
+                AuthResponse resp = new AuthResponse(
+                    token, (int)userRtrv.Id!, userRtrv.Email!, userRtrv.Rol!);
                 return resp;
             }
             else
             {
-                Console.WriteLine("La contraseña es incorrecta.");
-                throw new Exception("Credenciales no validas");
+                throw new UnauthorizedException("Credenciales no validas");
             }
+        }
+        catch (UserNotFoundException e)
+        {
+            throw new UserNotFoundException("No se ha encontrado el usuario: ", e);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw new Exception("Credenciales no validas");
+            throw new UnauthorizedException("Credenciales no validas: ", e);
         }
     }
 
@@ -48,29 +51,33 @@ public class AuthService
     {
         try
         {
-            // Todo: Validar si correo existe
+            if (validateUserFields(user))
+            {
+                throw new BadRequestException();
+            }
 
-            // Hash password
             string hashedPass = SecurityUtils.HashPassword(user.Contrasena!);
             user.Contrasena = hashedPass;
 
             Usuario userRtrv = await this.authRepository.Register(user);
             string token = SecurityUtils.GenerateJWTToken(userRtrv, "this is my custom Secret key for authentication");
-            AuthResponse resp = new AuthResponse();
-            resp.StatusCode = 200;
-            resp.AccessToken = token;
-            resp.UserEmail = userRtrv.Email;
-            resp.UserID = userRtrv.Id;
-            resp.UserRole = userRtrv.Rol;
+            AuthResponse resp = new AuthResponse(
+                    token, (int)userRtrv.Id!, userRtrv.Email!, userRtrv.Rol!);
             return resp;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            AuthResponse resp = new AuthResponse();
-            resp.StatusCode = 500;
-            return resp;
+            throw new UnauthorizedException("Credenciales no validas: ", e);
         }
+    }
+
+    private bool validateUserFields(Usuario user)
+    {
+        return user.Nombres == null || "".Equals(user.Nombres) ||
+        user.Apellidos == null || "".Equals(user.Apellidos) ||
+        user.Email == null || "".Equals(user.Email) ||
+        user.Contrasena == null || "".Equals(user.Contrasena) ||
+        user.Rol == null || "".Equals(user.Rol);
     }
 
 }
