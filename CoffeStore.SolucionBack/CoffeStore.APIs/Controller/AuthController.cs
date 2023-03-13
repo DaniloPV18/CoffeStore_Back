@@ -24,7 +24,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            return await this.authService.Login(user);
+            return Ok(await this.authService.Login(user));
         }
         catch (BadRequestException e)
         {
@@ -50,7 +50,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            return await this.authService.Register(user);
+            return Ok(await this.authService.Register(user));
         }
         catch (BadRequestException e)
         {
