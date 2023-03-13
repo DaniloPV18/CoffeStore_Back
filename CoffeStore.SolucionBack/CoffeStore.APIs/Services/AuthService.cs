@@ -39,7 +39,7 @@ public class AuthService
             }
             else
             {
-                throw new UnauthorizedException("Credenciales no validas");
+                throw new UnauthorizedException();
             }
         }
         catch (UserNotFoundException e)
@@ -56,6 +56,11 @@ public class AuthService
     {
         try
         {
+            if (user.Rol == null || "".Equals(user.Rol))
+            {
+                user.Rol = "USER";
+            }
+
             if (validateUserFields(user))
             {
                 throw new BadRequestException();
@@ -69,6 +74,10 @@ public class AuthService
             AuthResponse resp = new AuthResponse(
                     token, (int)userRtrv.Id!, userRtrv.Email!, userRtrv.Rol!);
             return resp;
+        }
+        catch (BadRequestException e)
+        {
+            throw new BadRequestException("Usuario no valido: " + e);
         }
         catch (Exception e)
         {
