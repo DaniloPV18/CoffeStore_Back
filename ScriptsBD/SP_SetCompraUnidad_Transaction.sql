@@ -34,8 +34,8 @@ BEGIN
 	DECLARE @Id_usuario			AS INT
 	DECLARE @cedula_usuario		AS VARCHAR(255)
 
-	DECLARE @Id_forma_pago		AS INT
 	DECLARE @codigo_forma_pago	AS VARCHAR(255)
+	DECLARE @nombre_forma_pago	AS VARCHAR(255)
 
 	DECLARE @Id_producto		AS INT
 	DECLARE @codigo_producto	AS VARCHAR(255)
@@ -51,33 +51,45 @@ BEGIN TRY
 				BEGIN
 
 					SELECT 
-							@cedula_usuario =		CONVERT(INT, DATO_XML.X.value('Cedula[1]','VARCHAR(255)'))
-							FROM @iXML.nodes('/CompraUnidad/Usuario') AS DATO_XML(X)
+							@cedula_usuario =		LTRIM(RTRIM(DATO_XML.X.value('UsuarioCedula[1]','VARCHAR(255)'))),
+							@nombre_forma_pago =	LTRIM(RTRIM(DATO_XML.X.value('FormaPagoNombre[1]','VARCHAR(255)'))),	
+							@Id_producto	=		CONVERT(INT, DATO_XML.X.value('ProductoId[1]','INT')),
+							@cantidad =				CONVERT(INT, DATO_XML.X.value('Cantidad[1]','INT'))
+							FROM @iXML.nodes('/CompraUnidad') AS DATO_XML(X)
+								
+					SET @Id_usuario = (SELECT U.Id FROM Usuario AS U WHERE U.Cedula = @cedula_usuario)	
+					SET @codigo_forma_pago = (SELECT F.Codigo FROM FormaPago AS F WHERE F.Metodo = @nombre_forma_pago)						
 
-					SELECT
-							@codigo_forma_pago =	CONVERT(INT, DATO_XML.X.value('Codigo[1]','VARCHAR(255)'))
-							FROM @iXML.nodes('/CompraUnidad/FormaPago') AS DATO_XML(X)
+					DECLARE @email AS VARCHAR(255) = (SELECT U.Email FROM Usuario AS U WHERE U.Cedula = @cedula_usuario)
 
-					SELECT
-							@Id_producto =	CONVERT(INT, DATO_XML.X.value('Id[1]','INT'))
-							FROM @iXML.nodes('/CompraUnidad/Producto') AS DATO_XML(X)
+					PRINT @Id_Usuario
+					PRINT @email
 
-
-
-					INSERT INTO 
-					Producto
-					(Nombre, Descripcion, ImagenUrl, Precio,	Categoria, Estado, CreatedAt)
+					INSERT INTO FormaPago_Usuario 
+					(Usuario, FormaPago, Cuenta, CreatedAt) 
 					VALUES 
-					(@nombre,@descripcion,@imagen_url,@precio,	@categoria,@estado,@f_creacion)
+					(@Id_usuario, 'PAY', @email, GETDATE())
+
+					DECLARE @contador_FormaPago_Usuario AS INT = (SELECT COUNT(*) FROM FormaPago_Usuario)
+
+					INSERT INTO CompraUnidad 
+					(Producto,		Cantidad)
+					VALUES
+					(@Id_producto, @cantidad)
+
+					DECLARE @contador_CompraUnidad AS INT = (SELECT COUNT(*) FROM CompraUnidad)
+
+					PRINT @contador_FormaPago_Usuario
+					PRINT @contador_CompraUnidad
+
+					INSERT INTO CompraConjunto 
+					(CompraUnidad,				FormaPago_Usuario)
+					VALUES
+					(@contador_CompraUnidad,	@contador_CompraUnidad)
 
 					SET @respuesta	= 'Ok'
 					SET @leyenda	= 'Se ha insertado un nuevo registro.'
-				END
-
-			
-
-			
-
+				END		
 			
 			-- CONFIRMAR TRANSACTION
 			IF @@TRANCOUNT > 0
@@ -91,8 +103,9 @@ BEGIN TRY
 				ROLLBACK TRANSACTION TRX;
 			END
 			SET @respuesta	= 'Bad'
-			SET @leyenda	= 'Ha occurrido un error.'
+			SET @leyenda	= 'Ha occurrido un error.' + ERROR_MESSAGE()
 	END CATCH
 
 	SELECT @respuesta as Respuesta, @leyenda as Leyenda
+END
 GO
