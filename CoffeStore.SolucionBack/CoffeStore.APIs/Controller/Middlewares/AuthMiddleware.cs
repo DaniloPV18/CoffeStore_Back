@@ -7,7 +7,7 @@ public class AuthMiddleware : IMiddleware
     private string secretKey;
 
     private string[] routes = {
-        "/api/pordefinir"
+        "/api/authentication/refresh-token"
     };
     
     public AuthMiddleware()

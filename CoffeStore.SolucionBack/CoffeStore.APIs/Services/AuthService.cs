@@ -85,6 +85,15 @@ public class AuthService
         }
     }
 
+    public AuthResponse RefreshToken(string token)
+    {
+        var user = SecurityUtils.GetUserFromJWTToken(token, this.secretKey);
+        string newToken = SecurityUtils.GenerateJWTToken(user, this.secretKey);
+        AuthResponse resp = new AuthResponse(
+                newToken, (int)user.Id!, user.Email!, user.Rol!);
+        return resp;
+    }
+
     private bool validateUserFields(Usuario user)
     {
         return user.Nombres == null || "".Equals(user.Nombres) ||

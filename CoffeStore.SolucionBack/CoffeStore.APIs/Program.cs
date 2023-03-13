@@ -1,4 +1,5 @@
 using CoffeStore.APIs.Controller.Middlewares;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddCors(
     }
 );
 builder.Services.AddTransient<AuthMiddleware>();
+builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

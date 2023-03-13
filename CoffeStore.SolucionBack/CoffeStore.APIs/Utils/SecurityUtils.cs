@@ -58,6 +58,24 @@ public class SecurityUtils
         return validatedToken != null;
     }
 
+    public static Usuario GetUserFromJWTToken(string tokenStr, string secretKey)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(secretKey);
+        var token = tokenHandler.ReadJwtToken(tokenStr);
+        var payload = token.Payload;
+
+        var usuario = new Usuario
+        {
+            Id = int.Parse(payload["id"].ToString()!),
+            Nombres = payload["nombres"]?.ToString(),
+            Apellidos = payload["apellidos"]?.ToString(),
+            Rol = payload["rol"]?.ToString(),
+        };
+
+        return usuario;
+    }
+
     public static string HashPassword(string passwordToEncrypt)
     {
         byte[] salt;
