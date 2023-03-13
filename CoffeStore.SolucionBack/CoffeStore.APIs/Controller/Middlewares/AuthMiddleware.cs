@@ -7,8 +7,7 @@ public class AuthMiddleware : IMiddleware
     private string secretKey;
 
     private string[] routes = {
-        "/api/Categoria",
-        "/api/Producto"
+        "/api/pordefinir"
     };
     
     public AuthMiddleware()
@@ -24,7 +23,6 @@ public class AuthMiddleware : IMiddleware
         if (validateIfRouteIsProtected(routes, context.Request.Path.ToString()))
         {
             var token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            Console.WriteLine(token);
             try
             {
                 SecurityUtils.ValidateJWTToken(token, this.secretKey);
@@ -35,7 +33,6 @@ public class AuthMiddleware : IMiddleware
                 context.Response.StatusCode = 401;
                 return;
             }
-            Console.WriteLine("Entré al middleware!");
         }
 
         await next(context);
