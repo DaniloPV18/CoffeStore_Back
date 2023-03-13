@@ -9,10 +9,15 @@ namespace CoffeStore.APIs.Services;
 public class AuthService
 {
     private AuthRepository authRepository;
+    private string secretKey;
 
     public AuthService()
     {
         this.authRepository = new AuthRepository();
+        this.secretKey = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .Build()
+            .GetSection("JsonWebToken")["secret_key"];
     }
 
     public async Task<AuthResponse> Login(Usuario user)
@@ -27,7 +32,7 @@ public class AuthService
             Usuario userRtrv = await this.authRepository.Login(user.Email!);
             if (SecurityUtils.VerifyHashedPassword(userRtrv.Contrasena!, user.Contrasena!))
             {
-                string token = SecurityUtils.GenerateJWTToken(userRtrv, "this is my custom Secret key for authentication");
+                string token = SecurityUtils.GenerateJWTToken(userRtrv, this.secretKey);
                 AuthResponse resp = new AuthResponse(
                     token, (int)userRtrv.Id!, userRtrv.Email!, userRtrv.Rol!);
                 return resp;
@@ -60,7 +65,7 @@ public class AuthService
             user.Contrasena = hashedPass;
 
             Usuario userRtrv = await this.authRepository.Register(user);
-            string token = SecurityUtils.GenerateJWTToken(userRtrv, "this is my custom Secret key for authentication");
+            string token = SecurityUtils.GenerateJWTToken(userRtrv, this.secretKey);
             AuthResponse resp = new AuthResponse(
                     token, (int)userRtrv.Id!, userRtrv.Email!, userRtrv.Rol!);
             return resp;

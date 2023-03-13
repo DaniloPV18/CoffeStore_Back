@@ -4,11 +4,20 @@ namespace CoffeStore.APIs.Controller.Middlewares;
 
 public class AuthMiddleware : IMiddleware
 {
+    private string secretKey;
 
     private string[] routes = {
         "/api/Categoria",
         "/api/Producto"
     };
+    
+    public AuthMiddleware()
+    {
+        this.secretKey = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .Build()
+            .GetSection("JsonWebToken")["secret_key"];
+    }
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
@@ -18,7 +27,7 @@ public class AuthMiddleware : IMiddleware
             Console.WriteLine(token);
             try
             {
-                SecurityUtils.ValidateJWTToken(token, "this is my custom Secret key for authentication");
+                SecurityUtils.ValidateJWTToken(token, this.secretKey);
             }
             catch (Exception ex)
             {
