@@ -6,5 +6,6 @@
         public const string SetProducto = "SetProducto";
         public const string GetCategoriaProducto = "GetCategoria";
         public const string Authentication = "Authentication";
+        public const string SetCompraUnidad = "SetCompraUnidad";
     }
 }
