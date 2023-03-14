@@ -23,18 +23,18 @@ namespace CoffeStore.APIs.Controller
             return Ok(JsonConvert.SerializeObject(dsResultado.Tables[0], Newtonsoft.Json.Formatting.Indented));
         }
 
-        /*
+        [Route("getuser")]
         [HttpGet]
-        public async Task<ActionResult<Usuario>> GetUsuarioId(string email)
+        public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
             Usuario usuario = new Usuario();
-            usuario.Email = email;
-            var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["default_bd"];
+            usuario.Id = id;
+            var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["conexion_bd"];
             XDocument xmlParam = DBXmlMethods.getXML(usuario);
-            DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.GetUsuario, "CONSULTA_USUARIO_CORREO", xmlParam.ToString());
-            return Ok(JsonConvert.SerializeObject(dsResultado, Newtonsoft.Json.Formatting.Indented));
+            DataSet dsResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesUsuario.GetUsuario, "CONSULTA_USUARIO_ID", xmlParam.ToString());
+            return Ok(JsonConvert.SerializeObject(dsResultado.Tables[0], Newtonsoft.Json.Formatting.Indented));
         }
-        */
+        
 
         [Route("createuser")]
         [HttpPost]
