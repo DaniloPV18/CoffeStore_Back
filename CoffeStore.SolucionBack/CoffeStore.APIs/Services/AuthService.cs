@@ -30,6 +30,7 @@ public class AuthService
             }
 
             Usuario userRtrv = await this.authRepository.Login(user.Email!);
+            userRtrv.Email = user.Email;
             if (SecurityUtils.VerifyHashedPassword(userRtrv.Contrasena!, user.Contrasena!))
             {
                 string token = SecurityUtils.GenerateJWTToken(userRtrv, this.secretKey);
@@ -70,6 +71,7 @@ public class AuthService
             user.Contrasena = hashedPass;
 
             Usuario userRtrv = await this.authRepository.Register(user);
+            userRtrv.Email = user.Email;
             string token = SecurityUtils.GenerateJWTToken(userRtrv, this.secretKey);
             AuthResponse resp = new AuthResponse(
                     token, (int)userRtrv.Id!, userRtrv.Email!, userRtrv.Rol!);

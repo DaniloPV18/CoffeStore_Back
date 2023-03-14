@@ -9,7 +9,7 @@ public class AuthMiddleware : IMiddleware
     private string[] routes = {
         "/api/authentication/refresh-token"
     };
-    
+
     public AuthMiddleware()
     {
         this.secretKey = new ConfigurationBuilder()
@@ -20,6 +20,7 @@ public class AuthMiddleware : IMiddleware
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
+        Console.WriteLine("\n-> INICIA " + context.Request.Path.ToString() + "\n");
         if (validateIfRouteIsProtected(routes, context.Request.Path.ToString()))
         {
             var token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
@@ -36,6 +37,7 @@ public class AuthMiddleware : IMiddleware
         }
 
         await next(context);
+        Console.WriteLine("\n-> FINALIZA " + context.Request.Path.ToString() + "\n");
     }
 
     private bool validateIfRouteIsProtected(string[] routes, string route)

@@ -16,11 +16,18 @@ public class SecurityUtils
             throw new ArgumentNullException("user");
         }
 
+        Console.WriteLine(user.Id);
+        Console.WriteLine(user.Nombres);
+        Console.WriteLine(user.Apellidos);
+        Console.WriteLine(user.Email);
+        Console.WriteLine(user.Rol);
+
         var claims = new List<Claim>
         {
             new Claim("id", user.Id.ToString()!),
             new Claim("nombres", user.Nombres!),
             new Claim("apellidos", user.Apellidos!),
+            new Claim("email", user.Email!),
             new Claim("rol", user.Rol!),
         };
 
@@ -70,6 +77,7 @@ public class SecurityUtils
             Id = int.Parse(payload["id"].ToString()!),
             Nombres = payload["nombres"]?.ToString(),
             Apellidos = payload["apellidos"]?.ToString(),
+            Email = payload["email"]?.ToString(),
             Rol = payload["rol"]?.ToString(),
         };
 

@@ -29,13 +29,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<AuthMiddleware>();
-//app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
 app.UseCors();
 
 app.MapControllers();
+app.UseMiddleware<AuthMiddleware>();
 
 app.Run();
