@@ -15,14 +15,12 @@ namespace CoffeStore.APIs.Models
             CreatedAt = DateTime.Now;
             Estado = "A";
         }
-        public int? Id { get; set; }
+        public int? Codigo { get; set; }
         public string? Nombre { get; set; }
         public string? Descripcion { get; set; }
         public string? ImagenUrl { get; set;}
         public float? Precio { get; set; }
-        [ForeignKey ("Categoria")]
-        public string? CategoriaCodigo { get; set; }
-        public CategoriaProducto? Categoria { get; set; }
+        public string? Categoria { get; set; }
         public string? Estado { get; set; }
         public DateTime? CreatedAt { set; get; }
         public DateTime? UpdatedAt { set; get; }

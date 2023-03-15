@@ -24,11 +24,11 @@ namespace CoffeStore.APIs.Controller
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Producto>> GetProductoid(int id)
+        public async Task<ActionResult<Producto>> GetProductoid(int codigo)
         {
             var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["conexion_bd"];
             Producto producto = new();
-            producto.Id = id;
+            producto.Codigo = codigo;
             XDocument xmlParam = DBXmlMethods.getXML(producto);
             DataSet sResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesProducto.GetProducto, "CONSULTA_PRODUCTO_ID", xmlParam.ToString());
             return Ok(JsonConvert.SerializeObject(sResultado, Formatting.Indented));
@@ -49,11 +49,11 @@ namespace CoffeStore.APIs.Controller
         
         [HttpPut("Eliminar/{id}")]
 
-        public async Task<ActionResult<Producto>> GetProductoEliminar(int id)
+        public async Task<ActionResult<Producto>> GetProductoEliminar(int codigo)
         {
             var cadenaConexion = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["conexion_bd"];
             Producto producto = new(); 
-            producto.Id = id;
+            producto.Codigo = codigo;
             XDocument xmlParam = DBXmlMethods.getXML(producto);
             DataSet sResultado = await DBXmlMethods.ejecutaBase(cadenaConexion, SPNamesProducto.SetProducto, "DELETE", xmlParam.ToString());
             return Ok(JsonConvert.SerializeObject(sResultado, Formatting.Indented));
